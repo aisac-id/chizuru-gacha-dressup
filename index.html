@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Chizuru Gacha — Koleksi Kostum Dunia</title>
+<style>
+:root{--bg:#141021;--card:#241b38;--accent:#ff5c8a;--gold:#ffc857;--text:#fff}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.wrap{max-width:560px;margin:0 auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+header{display:flex;justify-content:space-between;align-items:center}
+h1{font-size:1.15rem;color:var(--accent)}
+.coins{background:var(--card);padding:6px 12px;border-radius:99px;font-size:.9rem;color:var(--gold);font-weight:700}
+nav{display:flex;gap:8px}
+nav button{flex:1;padding:10px;border-radius:12px;border:none;background:var(--card);color:#bbb;font-weight:700;cursor:pointer}
+nav button.on{background:var(--accent);color:#fff}
+.screen{display:none;flex-direction:column;gap:12px}
+.screen.on{display:flex}
+.pullrow{display:flex;gap:8px}
+.pullrow button{flex:1;padding:14px;border-radius:14px;border:none;font-weight:800;font-size:.95rem;cursor:pointer}
+#pull1{background:var(--card);color:var(--text);border:2px solid var(--accent)}
+#pull10{background:linear-gradient(135deg,var(--accent),#b0308a);color:#fff}
+.rate{font-size:.75rem;opacity:.65;text-align:center}
+.reveal{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;min-height:60px}
+.rcard{width:86px;border-radius:12px;overflow:hidden;background:var(--card);border:2px solid #555;animation:pop .4s}
+.rcard img{width:100%;height:110px;object-fit:cover;object-position:top}
+.rcard .t{font-size:.6rem;padding:4px;text-align:center}
+.rcard.SSR{border-color:var(--gold);box-shadow:0 0 14px rgba(255,200,87,.6)}
+.rcard.SR{border-color:#c084fc}
+.rcard.R{border-color:#60a5fa}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+.rar{font-weight:800}
+.rar.SSR{color:var(--gold)}.rar.SR{color:#c084fc}.rar.R{color:#60a5fa}.rar.N{color:#9ca3af}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cell{border-radius:12px;overflow:hidden;background:var(--card);border:2px solid #3a2f52;cursor:pointer;position:relative}
+.cell img{width:100%;height:120px;object-fit:cover;object-position:top;display:block}
+.cell .n{font-size:.58rem;padding:4px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cell.locked{display:flex;align-items:center;justify-content:center;height:146px;color:#555;font-size:1.2rem;cursor:default}
+.cell.SSR{border-color:var(--gold)}.cell.SR{border-color:#c084fc}.cell.R{border-color:#60a5fa}
+.count{font-size:.8rem;opacity:.7;text-align:center}
+.photo{display:flex;flex-direction:column;gap:10px;align-items:center}
+.frame{padding:10px;background:#fff;border-radius:6px;max-width:100%}
+.frame img{width:100%;max-height:56vh;object-fit:cover;object-position:top;display:block;border-radius:4px}
+.frame.polaroid{padding:12px 12px 40px}
+.frame.neon{background:#0ff0fc;box-shadow:0 0 20px #0ff0fc}
+.frame.batik{background:repeating-linear-gradient(45deg,#7a4a1f 0 8px,#c8963c 8px 16px)}
+.cap{color:#222;font-size:.8rem;text-align:center;padding-top:8px;font-weight:600}
+.controls{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.controls button,.controls select{padding:8px 10px;border-radius:10px;border:none;background:var(--card);color:var(--text);font-size:.78rem;cursor:pointer}
+.controls button.on{background:var(--accent)}
+select{max-width:100%}
+input[type=text]{width:100%;padding:10px;border-radius:10px;border:none;background:var(--card);color:var(--text)}
+.dl{padding:12px 22px;border-radius:12px;border:none;background:var(--gold);color:#222;font-weight:800;cursor:pointer}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#000c;padding:10px 18px;border-radius:99px;font-size:.85rem;opacity:0;transition:.3s;pointer-events:none}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><h1>Chizuru Gacha Kostum</h1><div class="coins" id="coins">0</div></header>
+<nav>
+<button id="nav-gacha" class="on" onclick="tab('gacha')">Gacha</button>
+<button id="nav-album" onclick="tab('album')">Album</button>
+<button id="nav-photo" onclick="tab('photo')">Photo</button>
+</nav>
+
+<div class="screen on" id="scr-gacha">
+<div class="pullrow"><button id="pull1" onclick="pull(1)">Pull ×1 (100)</button><button id="pull10" onclick="pull(10)">Pull ×10 (900)</button></div>
+<div class="rate">Rate: SSR 5% (adat tribal) · SR 70% (adat ikonik) · R 25% (olahraga) · duplikat = +20 koin</div>
+<div class="reveal" id="reveal"></div>
+<div class="pullrow"><button id="daily" style="background:var(--card);color:var(--gold);border:2px solid var(--gold)" onclick="daily()">Bonus harian +200</button></div>
+</div>
+
+<div class="screen" id="scr-album">
+<div class="count" id="count"></div>
+<div class="grid" id="grid"></div>
+</div>
+
+<div class="screen" id="scr-photo">
+<select id="psel" onchange="renderPhoto()"></select>
+<div class="frame" id="pframe"><img id="pimg" alt=""><div class="cap" id="pcap"></div></div>
+<input type="text" id="capin" placeholder="Tulis caption..." oninput="renderPhoto()">
+<div class="controls">
+<button data-f="" class="on" onclick="setFrame(this,'')">Polos</button>
+<button data-f="polaroid" onclick="setFrame(this,'polaroid')">Polaroid</button>
+<button data-f="neon" onclick="setFrame(this,'neon')">Neon</button>
+<button data-f="batik" onclick="setFrame(this,'batik')">Batik</button>
+</div>
+<div class="controls">
+<button data-fl="none" class="on" onclick="setFilter(this,'none')">Normal</button>
+<button data-fl="sunset" onclick="setFilter(this,'sunset')">Sunset</button>
+<button data-fl="mono" onclick="setFilter(this,'mono')">Mono</button>
+<button data-fl="pastel" onclick="setFilter(this,'pastel')">Pastel</button>
+</div>
+<button class="dl" onclick="download()">Download Foto</button>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="data.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+let S=JSON.parse(localStorage.getItem('cg_save')||'null')||{coins:300,owned:[],lastDaily:''};
+function save(){localStorage.setItem('cg_save',JSON.stringify(S));$('coins').textContent=S.coins+' koin'}
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),1800)}
+function tab(t){['gacha','album','photo'].forEach(x=>{$('scr-'+x).classList.toggle('on',x===t);$('nav-'+x).classList.toggle('on',x===t)});if(t==='album')renderAlbum();if(t==='photo')renderPhotoSel()}
+const FILTERS={none:'',sunset:'sepia(.5) saturate(1.6) hue-rotate(-15deg) brightness(1.05)',mono:'grayscale(1) contrast(1.1)',pastel:'saturate(.6) brightness(1.15) contrast(.9)'};
+let curFilter='none',curFrame='';
+function roll(){
+ const r=Math.random();const rar=r<.05?'SSR':r<.30?'R':'SR';
+ const pool=COSTUMES.filter(c=>c.rarity===rar);
+ return pool[Math.floor(Math.random()*pool.length)];
+}
+function pull(n){
+ const cost=n===1?100:900;
+ if(S.coins<cost){toast('Koin kurang! Claim bonus harian dulu.');return}
+ S.coins-=cost;const box=$('reveal');box.innerHTML='';
+ for(let i=0;i<n;i++){
+  const c=roll();const dup=S.owned.includes(c.id);
+  if(dup)S.coins+=20;else S.owned.push(c.id);
+  const d=document.createElement('div');d.className='rcard '+c.rarity;d.style.animationDelay=(i*.08)+'s';
+  d.innerHTML='<img src="assets/'+c.file+'"><div class="t"><span class="rar '+c.rarity+'">'+c.rarity+'</span> '+c.name+(dup?' (dup +20)':'')+'</div>';
+  box.appendChild(d);
+ }
+ save();toast(n===1?'Pull berhasil!':'10 pull berhasil!');
+}
+function daily(){
+ const today=new Date().toDateString();
+ if(S.lastDaily===today){toast('Bonus hari ini sudah diambil!');return}
+ S.lastDaily=today;S.coins+=200;save();toast('+200 koin!');
+}
+function renderAlbum(){
+ $('count').textContent='Koleksi: '+S.owned.length+' / 100';
+ const g=$('grid');g.innerHTML='';
+ COSTUMES.forEach(c=>{
+  const d=document.createElement('div');
+  if(S.owned.includes(c.id)){d.className='cell '+c.rarity;d.innerHTML='<img src="assets/'+c.file+'"><div class="n">'+c.id+'. '+c.name+'</div>';d.onclick=()=>{tab('photo');$('psel').value=c.id;renderPhoto()};}
+  else{d.className='cell locked';d.textContent='?';}
+  g.appendChild(d);
+ });
+}
+function renderPhotoSel(){
+ const s=$('psel');s.innerHTML='';
+ const owned=COSTUMES.filter(c=>S.owned.includes(c.id));
+ if(!owned.length){s.innerHTML='<option value="">Belum punya kostum — pull dulu!</option>';$('pimg').removeAttribute('src');return}
+ owned.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.id+'. '+c.name;s.appendChild(o)});
+ renderPhoto();
+}
+function renderPhoto(){
+ const c=COSTUMES.find(x=>x.id==$('psel').value);if(!c)return;
+ $('pimg').src='assets/'+c.file;$('pimg').style.filter=FILTERS[curFilter];
+ $('pframe').className='frame '+curFrame;
+ $('pcap').textContent=$('capin').value||('Chizuru — '+c.name);
+}
+function setFrame(b,f){curFrame=f;document.querySelectorAll('[data-f]').forEach(x=>x.classList.toggle('on',x===b));renderPhoto()}
+function setFilter(b,f){curFilter=f;document.querySelectorAll('[data-fl]').forEach(x=>x.classList.toggle('on',x===b));renderPhoto()}
+function download(){
+ const c=COSTUMES.find(x=>x.id==$('psel').value);if(!c){toast('Pilih kostum dulu!');return}
+ const img=new Image();img.onload=()=>{
+  const W=720,H=1080,pad=curFrame==='polaroid'?40:24,capH=curFrame==='polaroid'?90:60;
+  const cv=document.createElement('canvas');cv.width=W+pad*2;cv.height=H+pad*2+capH;
+  const ctx=cv.getContext('2d');
+  ctx.fillStyle=curFrame==='neon'?'#0ff0fc':curFrame==='batik'?'#7a4a1f':'#ffffff';
+  ctx.fillRect(0,0,cv.width,cv.height);
+  if(curFrame==='batik'){ctx.fillStyle='#c8963c';for(let y=0;y<cv.height;y+=32)for(let x=(y/32%2)*16;x<cv.width;x+=32)ctx.fillRect(x,y,16,16);}
+  ctx.filter=FILTERS[curFilter]||'none';
+  ctx.drawImage(img,pad,pad,W,H);
+  ctx.filter='none';ctx.fillStyle='#222';ctx.font='600 26px system-ui';ctx.textAlign='center';
+  ctx.fillText($('capin').value||('Chizuru — '+c.name),cv.width/2,H+pad+capH/2+8);
+  const a=document.createElement('a');a.download='chizuru-'+c.file.replace('.jpg','.png');a.href=cv.toDataURL('image/png');a.click();
+  toast('Foto tersimpan!');
+ };
+ img.src='assets/'+c.file;
+}
+save();
+</script>
+</body>
+</html>
