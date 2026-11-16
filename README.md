@@ -2,12 +2,18 @@
 
 Gacha kostum Chizuru Mizuhara: kumpulkan 100 kostum adat & olahraga, lalu foto-foto!
 
-## Cara Main
-- Koin awal 300. Pull ×1 = 100 koin, ×10 = 900 koin.
-- Rate: SSR 5% (adat tribal), R 25% (olahraga), SR 70% (adat ikonik). Duplikat = +20 koin.
-- Bonus harian +200 koin.
-- Album koleksi + Photo Mode: pilih frame (polos/polaroid/neon/batik), filter, caption, lalu download hasilnya.
-- Progres disimpan di browser (localStorage).
+## Fitur (v2 "AAA")
+- Summon sinematik: lingkaran mantra, orb berwarna sesuai rarity, flash + screen shake, kartu flip 3D.
+- SSR: sinar emas berputar, glow pelangi, ledakan partikel, fanfare, getaran (haptics).
+- Efek suara sintetis WebAudio (charge, whoosh, flip, chime rarity, koin) + tombol mute.
+- Pity system: SSR dijamin pada summon ke-50, counter tampil di bar atas.
+- Rate: SSR 5% (adat tribal), SR 70% (adat ikonik), R 25% (olahraga).
+- Duplikat: R +20 / SR +50 / SSR +150 koin. Bonus harian +200.
+- Summon ×10: buka kartu satu-satu atau "Buka Semua", ringkasan BARU/SSR.
+- Riwayat 60 summon terakhir + detail rate & pity.
+- Album: progress %, filter rarity, badge NEW, detail kostum (asal & pose).
+- Photo Mode: frame (polos/polaroid/neon/batik), filter, caption, download PNG resolusi tinggi.
+- Partikel ambient melayang di seluruh layar; progres disimpan di localStorage.
 
 ## Mainkan
 https://aisac-id.github.io/chizuru-gacha-dressup/
