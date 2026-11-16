@@ -25,6 +25,8 @@ https://aisac-id.github.io/chizuru-gacha-dressup/
 
 ## Teknis
 Static HTML + JS, tanpa server. Buka `index.html` langsung atau via GitHub Pages.
+
+
 ---
 
 ## Brand & Promotion Kit
