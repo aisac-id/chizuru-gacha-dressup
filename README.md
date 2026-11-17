@@ -1,5 +1,15 @@
 # Chizuru Gacha Dress-Up
 
+<p align="center"><img src="promo/logo.png" width="96" alt="logo"></p>
+
+![Key art Gacha Dress-Up](promo/hero.jpg)
+
+| Software Box | Poster |
+|---|---|
+| ![Box](promo/box.jpg) | ![Poster](promo/poster.jpg) |
+
+> Promotion kit (logo, box, poster, hero, video suite) ada di folder `promo/` dan arsip `chizuru-promo-kit.zip`.
+
 Gacha kostum Chizuru Mizuhara: kumpulkan 100 kostum adat & olahraga, lalu foto-foto!
 
 ## Fitur (v2 "AAA")
