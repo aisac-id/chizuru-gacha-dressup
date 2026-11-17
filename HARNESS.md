@@ -18,8 +18,8 @@ Standar kerja WAJIB untuk semua kontribusi di repo ini. Reviewer menolak PR yang
 | Maks 300 LoC per file kode | WAJIB untuk file baru. Pengecualian legacy: `index.html` (566 baris) dan `data.js` (minified) sampai refactor issue #21; jangan menambah baris di file legacy tanpa alasan kuat. |
 | ES modules, tanpa bundler | WAJIB untuk JS baru (`js/*.js`, `type="module"`). Kode inline legacy dipindah bertahap via #21. |
 | Nol hardcode secret/config (Twelve-Factor III) | WAJIB. Repo ini tidak punya secret runtime; konfigurasi tooling lewat env (lihat §4). Data game (`data.js`) adalah konten, bukan config. |
-| Supply-chain (SC): versi exact + lockfile + `npm ci` | WAJIB untuk devDependencies (Playwright). Tanpa dependensi runtime/CDN eksternal. |
-| TDD + CI test gate | WAJIB: logika gacha/state baru harus punya test (unit Node atau e2e Playwright); CI hijau sebelum Ready for review. |
+| Supply-chain (SC): versi exact + lockfile + `npm ci` | WAJIB untuk devDependencies (Playwright); GitHub Actions di-pin per commit SHA. Tanpa dependensi runtime/CDN eksternal. |
+| TDD + CI test gate | WAJIB: logika gacha/state baru harus punya test; `npm test` = unit (`node --test tests/unit/*.test.mjs`) + e2e Playwright (mobile & desktop); CI hijau sebelum Ready for review. |
 | Core Web Vitals | Target: LCP ≤ 2,5 s (4G mid-range), CLS ≤ 0,1, INP ≤ 200 ms. |
 | WCAG 2.1 AA | WAJIB: zoom tidak diblokir, keyboard penuh, alt bermakna, kontras ≥ 4.5:1, target sentuh ≥ 44×44 px, `prefers-reduced-motion`. |
 | Code 100% English (identifier/komentar/commit) | WAJIB. Teks UI Bahasa Indonesia; disclaimer ID/EN. Pengecualian i18n 3 bahasa (id/en/ja): tidak berlaku untuk game fan-made ini (keputusan Leader, scope kecil). |
@@ -47,8 +47,9 @@ Game tidak membutuhkan secret runtime. Env hanya untuk tooling dev/CI:
 
 | Variabel | Fungsi | Contoh (palsu) |
 |---|---|---|
+| `HOST` | Alamat bind server dev/test (default loopback) | `127.0.0.1` |
 | `PORT` | Port server statis lokal (`scripts/serve.mjs`) | `8123` |
-| `CI` | Mode CI (Playwright: tanpa reuse server) | `true` |
+| `CI` | Mode CI (Playwright: tanpa reuse server; guard fail-closed) | `true` |
 
 `.env` lokal di-gitignore; hanya `.env.example` (placeholder) yang di-commit. Bila kelak butuh infrastruktur (Vercel/Neon/Blob), wajib lewat `vercel-ai.cmd` + env platform, tidak pernah hardcode.
 
@@ -56,7 +57,7 @@ Game tidak membutuhkan secret runtime. Env hanya untuk tooling dev/CI:
 
 1. Satu PR = satu tujuan, ±maks 400 baris perubahan (lockfile/generated tidak dihitung), merujuk nomor issue.
 2. `node scripts/check-harness.mjs` LULUS (guard LoC, path terlarang, pola secret).
-3. Test lulus: `npm test` (e2e Playwright) + unit baru bila menyentuh logika; bukti uji (output test/screenshot/headless) ditempel di deskripsi PR.
+3. Test lulus: `npm test` (unit `node --test` + e2e Playwright mobile & desktop) + unit baru bila menyentuh logika; bukti uji (output test/screenshot/headless) ditempel di deskripsi PR.
 4. `C:\Users\Acer\.aisac\no-hardcode.cmd` LULUS — hasil ditempel di deskripsi PR (reviewer wajib menolak tanpa ini).
 5. A11y WCAG AA & performance budget bila menyentuh UI/aset: first view ≤ 180 KB, album viewport ≤ 500 KB, summon ×10 ≤ 1,1 MB, gambar web ≤ 120 KB.
 6. Review paralel: Code Reviewer + Security Reviewer (format `[BLOCKER|MAJOR|MINOR|NIT] file:baris, alasan, saran`).
