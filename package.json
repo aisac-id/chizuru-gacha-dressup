@@ -1,0 +1,25 @@
+{
+  "name": "repo",
+  "version": "1.0.0",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "npm run test:unit && playwright test",
+    "serve": "node scripts/serve.mjs",
+    "check": "node scripts/check-harness.mjs",
+    "test:unit": "node --test \"tests/unit/*.test.mjs\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aisac-id/chizuru-gacha-dressup.git"
+  },
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/aisac-id/chizuru-gacha-dressup/issues"
+  },
+  "homepage": "https://github.com/aisac-id/chizuru-gacha-dressup#readme",
+  "devDependencies": {
+    "@playwright/test": "1.65.1"
+  }
+}
